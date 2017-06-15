@@ -144,7 +144,7 @@ class Toggle extends React.Component{
   
   toggle()
   {
-    this.setState((preState, props) => ({ isToggle: !preState.isToggle }));
+    this.setState((prevState, props) => ({ isToggle: !prevState.isToggle }));
   }
 
   /**
@@ -174,7 +174,7 @@ class Toggle extends React.Component{
 
 let arr=[1, 2, 3, 4]
 let listItems = arr.map(item => 
-  <WelcomeC tips={item}></WelcomeC>
+  <WelcomeC tips={item} key={item}></WelcomeC>
 );
 
 class ListItem extends React.Component{
@@ -185,7 +185,18 @@ class ListItem extends React.Component{
 
   render()
   {
-    return <div>{listItems}</div>;
+    /*let items=this.props.items.map(((item,index)=><p key={index}>{item}</p>));
+    return <div>{items}</div>;*/
+    return (
+      <div>
+        {
+          this.props.items.map(((item,index)=>
+          <p key={index}>
+            {item}
+          </p>))
+        }
+      </div>
+    );
   }
 
   componentWillMount()
@@ -193,6 +204,120 @@ class ListItem extends React.Component{
     console.log(listItems)
   }
 }
+
+class NameForm extends React.Component{
+  constructor(props)
+  {
+    super(props);
+    this.handleChange=this.handleChange.bind(this);
+    this.handleSubmit=this.handleSubmit.bind(this);
+    this.state={value:''};
+  }
+
+  handleChange(event)
+  {
+    this.setState({value:event.target.value});
+  }
+
+  handleSubmit(event)
+  {
+    event.preventDefault();
+    alert(this.state.value);
+  }
+
+  render()
+  {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" onChange={this.handleChange}/>
+        </label>
+        <p>{this.state.value}</p>
+         <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
+class BoilingVerdict extends React.Component{
+  constructor(props)
+  {
+    super(props)
+  }
+
+  render()
+  {
+    return this.props.celsius>=100?(
+      <div>
+        The water would boil.
+      </div>
+    ):
+    (
+      <div>
+        The water would not boil.
+      </div>
+    );
+  }
+}
+
+class Calculator extends React.Component{
+  constructor(props)
+  {
+    super(props);
+    this.state={
+      celsius:0
+    };
+    this.handleChange=this.handleChange.bind(this);
+  }
+
+  handleChange(e)
+  {
+    this.setState({celsius:e.target.value});
+  }
+
+  render()
+  {
+    return (
+        <fieldset>
+          <legend>Enter temperature in Celsius:</legend>
+          <input type="text" onChange={this.handleChange}/>
+          <BoilingVerdict celsius={this.state.celsius}></BoilingVerdict>
+        </fieldset>
+    );
+  }
+}
+
+/*class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text"  onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}*/
 //ReactDOM.render(<MyAppC />, document.getElementById('root'));
 //ReactDOM.render(<WelcomeC tips='I am a class component...' />, document.getElementById('root'));
 //ReactDOM.render(<WelcomeC tips='I am a functional component...'/>, document.getElementById('root'));
@@ -200,6 +325,8 @@ class ListItem extends React.Component{
  * Rend Clock
  */
 //ReactDOM.render(<div><Clock title='test prpos' />,<Toggle /></div>, document.getElementById('root'));
-
-ReactDOM.render(<ListItem></ListItem> ,document.getElementById('root'));
+let items=[1,2,3,4];
+//
+//ReactDOM.render(<NameForm/>,document.getElementById('root'));
+ReactDOM.render(<Calculator/>,document.getElementById('root'));
 registerServiceWorker();
